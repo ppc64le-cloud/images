@@ -3,6 +3,7 @@ package osbuild
 import (
 	"fmt"
 	"sort"
+//        "runtime"
 
 	"github.com/osbuild/images/internal/common"
 	"github.com/osbuild/images/pkg/disk"
@@ -42,8 +43,17 @@ func validateBootupdMounts(mounts []Mount) error {
 	requiredMounts := map[string]bool{
 		"/":         true,
 		"/boot":     true,
-		"/boot/efi": true,
+// Not required for ppc64le so coment it for now
+//		"/boot/efi": true,
 	}
+        // Following code and be used to make it work for all
+        // architectures
+        //arch := runtime.GOARCH
+//
+//        if arch != "ppc64le" {
+//            requiredMounts["/boot/efi"] = true
+//        }
+
 	for _, mnt := range mounts {
 		delete(requiredMounts, mnt.Target)
 	}
