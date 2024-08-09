@@ -116,12 +116,12 @@ func (p *AnacondaInstaller) anacondaBootPackageSet() []string {
 		"grub2-tools",
 		"grub2-tools-extra",
 		"grub2-tools-minimal",
-		"efibootmgr",
 	}
 
 	switch p.platform.GetArch() {
 	case arch.ARCH_X86_64:
 		packages = append(packages,
+		        "efibootmgr",
 			"grub2-efi-x64",
 			"grub2-efi-x64-cdboot",
 			"grub2-pc",
@@ -132,10 +132,16 @@ func (p *AnacondaInstaller) anacondaBootPackageSet() []string {
 		)
 	case arch.ARCH_AARCH64:
 		packages = append(packages,
+		        "efibootmgr",
 			"grub2-efi-aa64-cdboot",
 			"grub2-efi-aa64",
 			"shim-aa64",
 		)
+        case arch.ARCH_PPC64LE:
+                packages = append(packages,
+                        "grub2-ppc64le",
+                        "grub2-ppc64le-modules",
+                )
 	default:
 		panic(fmt.Sprintf("unsupported arch: %s", p.platform.GetArch()))
 	}
